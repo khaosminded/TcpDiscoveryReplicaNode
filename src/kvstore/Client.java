@@ -43,79 +43,81 @@ public class Client {
 
             switch (opt) {
                 case EXIT:
-                    out.print(EXIT.name());
+                    out.println(EXIT.name());
                     this.serverResp = in.readLine();
                     break;
                 case DEL:
                     if (type.equals(CLIENT)) {
-                        out.print(DDELINIT.name());
-                        out.print(key);
+                        out.println(DDELINIT.name());
+                        out.println(key);
                         this.serverResp = in.readLine();
                     } else {
-                        out.print(DEL.name());
-                        out.print(key);
+                        out.println(DEL.name());
+                        out.println(key);
                         this.serverResp = in.readLine();
                     }
                     break;
                 case GET:
-                    out.print(GET.name());
-                    out.print(key);
+                    out.println(GET.name());
+                    out.println(key);
                     this.serverResp = in.readLine();
                     break;
                 case STORE:
-                    out.print(STORE.name());
+                    out.println(STORE.name());
                     char[] cbuf = new char[1024];
                     in.read(cbuf, 0, 1024);
                     this.serverResp = String.valueOf(cbuf);
                     break;
                 case PUT:
                     if (type.equals(CLIENT)) {
-                        out.print(DPUTINIT.name());
+                        out.println(DPUTINIT.name());
                     } else {
-                        out.print(PUT.name());
+                        out.println(PUT.name());
 
                     }
-                    out.print(key);
-                    out.print(value);
+                    out.println(key);
+                    out.println(value);
                     this.serverResp = in.readLine();
                     break;
                 case DDEL1:
-                    out.print(DDEL1.name());
-                    out.print(key);
+                    out.println(DDEL1.name());
+                    out.println(key);
                     this.serverResp = in.readLine();
                     break;
                 case DDEL2:
-                    out.print(DDEL2.name());
-                    out.print(key);
+                    out.println(DDEL2.name());
+                    out.println(key);
                     this.serverResp = in.readLine();
                     break;
                 case DDELABORT:
-                    out.print(DDELABORT.name());
-                    out.print(key);
+                    out.println(DDELABORT.name());
+                    out.println(key);
                     this.serverResp = in.readLine();
                     break;
                 case DPUT1:
-                    out.print(DPUT1.name());
-                    out.print(key);
-                    out.print(value);
+                    out.println(DPUT1.name());
+                    out.println(key);
+                    out.println(value);
                     this.serverResp = in.readLine();
                     break;
                 case DPUT2:
-                    out.print(DPUT2.name());
-                    out.print(key);
-                    out.print(value);
+                    out.println(DPUT2.name());
+                    out.println(key);
+                    out.println(value);
                     this.serverResp = in.readLine();
                     break;
                 case DPUTABORT:
-                    out.print(DPUTABORT.name());
-                    out.print(key);
-                    out.print(value);
+                    out.println(DPUTABORT.name());
+                    out.println(key);
+                    out.println(value);
                     this.serverResp = in.readLine();
                     break;
                 default:
                     break;
             }
-            System.out.print(serverResp);
+            if(type.equals(CLIENT))
+                System.out.println("server respond:"+serverResp);
+            else System.out.println("From "+clientSocket.getInetAddress()+":"+serverResp);
             return serverResp;
         } catch (IOException e) {
             e.printStackTrace();

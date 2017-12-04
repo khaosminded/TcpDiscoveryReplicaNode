@@ -32,11 +32,12 @@ public class store {
     }
 
     public void del(String key) {
-        map.remove(key);
+        if(map.get(key)!=null)
+            map.remove(key);
     }
 
     public String dput1(String key, String val) {
-        if (lockMap.get(key)) {
+        if (lockMap.get(key)!=null) {
             return Protocol.ACK_MESSAGE_ABORT;
         }
         lockMap.put(key, Boolean.TRUE);
@@ -54,7 +55,7 @@ public class store {
     }
 
     public String ddel1(String key) {
-        if (lockMap.get(key)) {
+        if (lockMap.get(key)!=null) {
             return Protocol.ACK_MESSAGE_ABORT;
         }
         lockMap.put(key, Boolean.TRUE);
@@ -62,7 +63,7 @@ public class store {
     }
 
     public Protocol.Operation ddel2(String key) {
-        map.remove(key);
+        del(key);
         lockMap.remove(key);
         return DEL;
     }
@@ -77,7 +78,7 @@ public class store {
         while (that.hasNext()) {
             String key = that.next();
             String val = map.get(key);
-            list += "key:" + key + ":value:" + val + ":\n";
+            list += "\nkey:" + key + ":value:" + val + ":";
         }
         return list;
     }

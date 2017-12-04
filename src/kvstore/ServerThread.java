@@ -50,9 +50,10 @@ public class ServerThread extends Thread {
                 response = Server.ST.list();
             } else if (opt.equals(EXIT.name())) {
                 response = Server.exit();
-            } else if (opt.equals(DPUTINIT.name())) {
+            } else if (opt.equals(DDELINIT.name())) {
+                //System.out.print("DDELINIT");
                 String key = in.readLine();
-                String val = in.readLine();
+                String val=null;
                 response = LeaderDel(key, val);
             } else if (opt.equals(DDEL1.name())) {
                 String key = in.readLine();
@@ -83,9 +84,10 @@ public class ServerThread extends Thread {
                 Server.ST.dputabort(key, val);
                 response = DPUTABORT.name();
             } else {
-                System.out.print("Wrong command received!");
+                System.out.println("Wrong command received!");
             }
-            out.print(response);
+            System.out.println("TO "+clientSocket.getInetAddress()+":"+response);
+            out.println(response);
 
         } catch (IOException e) {
             System.out.println("Exception caught when listening for a connection");
