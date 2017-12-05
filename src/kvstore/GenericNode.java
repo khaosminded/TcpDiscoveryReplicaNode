@@ -90,7 +90,9 @@ public class GenericNode {
                     value = args[5];
                     if (PUT.name().equalsIgnoreCase(args[3])) {
                         opt = PUT;
-                    } else {
+                    } else if (DEL.name().equalsIgnoreCase(args[3])) {
+                        opt = DEL;
+                    }else {
                         wc = true;
                     }
                     break;

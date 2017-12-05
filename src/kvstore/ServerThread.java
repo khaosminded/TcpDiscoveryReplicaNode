@@ -53,7 +53,7 @@ public class ServerThread extends Thread {
             } else if (opt.equals(DDELINIT.name())) {
                 //System.out.print("DDELINIT");
                 String key = in.readLine();
-                String val=null;
+                String val = null;
                 response = LeaderDel(key, val);
             } else if (opt.equals(DDEL1.name())) {
                 String key = in.readLine();
@@ -86,7 +86,7 @@ public class ServerThread extends Thread {
             } else {
                 System.out.println("Wrong command received!");
             }
-            System.out.println("TO "+clientSocket.getInetAddress()+":"+response);
+            System.out.println("TO " + clientSocket.getInetAddress() + ":" + response);
             out.println(response);
 
         } catch (IOException e) {
@@ -103,16 +103,24 @@ public class ServerThread extends Thread {
      */
     private String LeaderPut(String key, String val) {
         String[] result;
-        result = Server.broadcast(key, val, DPUT1);
-        int i;
-        for (i = 0; i < result.length; i++) {
-            if (result[i] != null) {
+        int i, k = Server.retry,ok;
+        
+        while (k-- > 0) {
+            result = Server.broadcast(key, val, DPUT1);
+            ok=1;
+            for (i = 0; i < result.length; i++) {
                 if (result[i].equals(Protocol.ACK_MESSAGE_ABORT)) {
+                    ok=0;
                     Server.broadcast(key, val, DPUTABORT);
-                    return Protocol.ACK_MESSAGE_ABORT;
+                    if (k == 0) {
+                        return Protocol.ACK_MESSAGE_ABORT;
+                    }
+                    break;
                 }
             }
+            if(ok==1)break;
         }
+        
         result = Server.broadcast(key, val, DPUT2);
         for (i = 0; i < result.length; i++) {
             if (result[i].equals(PUT.name())) {
@@ -125,15 +133,22 @@ public class ServerThread extends Thread {
 
     private String LeaderDel(String key, String val) {
         String[] result;
-        result = Server.broadcast(key, val, DDEL1);
-        int i;
-        for (i = 0; i < result.length; i++) {
-            if (result[i] != null) {
+        int i, k = Server.retry,ok;
+        
+        while (k-- > 0) {
+            result = Server.broadcast(key, val, DDEL1);
+            ok=1;
+            for (i = 0; i < result.length; i++) {
                 if (result[i].equals(Protocol.ACK_MESSAGE_ABORT)) {
+                    ok=0;
                     Server.broadcast(key, val, DDELABORT);
-                    return Protocol.ACK_MESSAGE_ABORT;
+                    if (k == 0) {
+                        return Protocol.ACK_MESSAGE_ABORT;
+                    }
+                    break;
                 }
             }
+            if(ok==1)break;
         }
         result = Server.broadcast(key, val, DDEL2);
         for (i = 0; i < result.length; i++) {

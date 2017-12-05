@@ -21,6 +21,7 @@ public class Server {
     private static boolean then_exit = false;
     public static int Tcounter = 0;
     private final static int re_interval = 2000;
+    public final static int retry=10;
     
     public Server(int portNumber, String MBPaddr, int MBPport) throws UnknownHostException {
         this.Addr = InetAddress.getLocalHost().getHostAddress();
@@ -91,6 +92,7 @@ public class Server {
                 public void run() {
                     while (true) {
                         if (then_exit) {
+                            unpublish();
                             System.exit(1);
                         }
                         refresh();
@@ -124,6 +126,7 @@ public class Server {
                 public void run() {
                     while (true) {
                         if (then_exit) {
+                            unpublish();
                             System.exit(1);
                         }
                         try {

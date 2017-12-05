@@ -23,7 +23,7 @@ public class store {
         this.type = type;
     }
 
-    public void put(String key, String val) {
+    public synchronized void put(String key, String val) {
         map.put(key, val);
     }
 
@@ -31,7 +31,7 @@ public class store {
         return map.get(key);
     }
 
-    public void del(String key) {
+    public synchronized void del(String key) {
         if(map.get(key)!=null)
             map.remove(key);
     }
@@ -45,7 +45,7 @@ public class store {
     }
 
     public Protocol.Operation dput2(String key, String val) {
-        map.put(key, val);
+        put(key, val);
         lockMap.remove(key);
         return PUT;
     }
