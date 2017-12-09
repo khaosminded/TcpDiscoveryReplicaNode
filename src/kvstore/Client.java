@@ -64,8 +64,8 @@ public class Client {
                     break;
                 case STORE:
                     out.println(STORE.name());
-                    char[] cbuf = new char[1024];
-                    in.read(cbuf, 0, 1024);
+                    char[] cbuf = new char[1024*128];
+                    in.read(cbuf, 0, 1024*128);
                     this.serverResp = String.valueOf(cbuf);
                     break;
                 case PUT:
